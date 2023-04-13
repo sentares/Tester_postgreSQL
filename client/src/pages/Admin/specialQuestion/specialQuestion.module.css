@@ -1,0 +1,51 @@
+.SpecialQuestion {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: white;
+}
+
+.quest {
+	margin: 6px;
+	padding: 10px;
+	border-radius: 5px;
+	background-color: gray;
+}
+
+.questionBlock {
+	width: 500px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.question {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.imageBlock {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	max-width: 200px;
+}
+.image {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.pen {
+	padding: 3px;
+	font-size: 20px;
+	border-radius: 100%;
+	background-color: antiquewhite;
+	color: black;
+}
+.pen:hover {
+	background-color: rgb(225, 177, 117);
+}
