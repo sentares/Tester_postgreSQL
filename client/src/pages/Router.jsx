@@ -11,6 +11,7 @@ import LoginPage from './Auth/login/LoginPage'
 import RegisterPage from './Auth/register/RegisterPage'
 import HomePage from './Student/homePage/HomePage'
 import TestsPage from './Student/testsPage/TestsPage'
+import TESTER from './Test/TESTER'
 
 const Router = () => {
 	const isAuth = useSelector(state => state.auth.isAuth)
@@ -29,6 +30,7 @@ const Router = () => {
 				<Route path='/questions' element={<QuestionsPage />} />
 				<Route path='/question/:id_question' element={<SpecialQuestion />} />
 				<Route path='/create' element={<CreateQuestion />} />
+				<Route path='/t' element={<TESTER />} />
 			</Routes>
 		)
 	} else if (isAuth) {

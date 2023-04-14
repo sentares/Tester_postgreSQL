@@ -130,9 +130,6 @@ const TestsPage = () => {
 		100
 	).toFixed(2)
 
-	// console.log(test?.image.path)
-	// console.log(id_question)
-
 	return (
 		<>
 			{showModal && (

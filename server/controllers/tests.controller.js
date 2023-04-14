@@ -38,7 +38,6 @@ class TestsController {
 			const imageQuery = 'select * from image_questions where id_question=$1'
 			const audioQuery = 'select * from audio_questions where id_question=$1'
 
-			// Выполняем оба запроса параллельно с помощью Promise.all
 			const [questionResult, imageResult, audioResult] = await Promise.all([
 				db.query(questionQuery, [id_question]),
 				db.query(imageQuery, [id_question]),
