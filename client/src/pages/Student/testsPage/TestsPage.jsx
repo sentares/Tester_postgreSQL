@@ -32,7 +32,9 @@ const TestsPage = () => {
 		id_question,
 		getQuestions,
 		getSpecialQuestion,
-		setIdQuestion,
+		// setIdQuestion,
+		currentIndex,
+		setCurrentIndex,
 	} = useGetQuestions()
 
 	const { answers, rightAnswer, getSpecialAnswer, getSpecialRightAnswer } =
@@ -60,13 +62,13 @@ const TestsPage = () => {
 		try {
 			setState(prevState => ({ ...prevState, loader: true }))
 			setState(prevState => ({ ...prevState, showModal: false }))
-			const stream = await navigator.mediaDevices.getUserMedia({
-				video: true,
-			})
-			setMediaStream(stream)
-			videoRef.current.srcObject = stream
-			startScreen()
-			startRecording()
+			// const stream = await navigator.mediaDevices.getUserMedia({
+			// 	video: true,
+			// })
+			// setMediaStream(stream)
+			// videoRef.current.srcObject = stream
+			// startScreen()
+			// startRecording()
 		} catch (error) {
 			console.log(error)
 			toast.warn('Для продолжения необходимо предоставить доступ к камере')
@@ -79,11 +81,11 @@ const TestsPage = () => {
 		toast.warn('Для продолжения необходимо предоставить доступ к камере')
 	}, [])
 
-	const nextQuestion = useCallback(() => {
-		setIdQuestion(id_question =>
-			id_question < allTests.length ? id_question + 1 : 0
-		)
-	}, [allTests.length, setIdQuestion])
+	// const nextQuestion = useCallback(() => {
+	// 	setIdQuestion(id_question =>
+	// 		id_question < allTests.length ? id_question + 1 : 0
+	// 	)
+	// }, [allTests.length, setIdQuestion])
 
 	const id_answers = useMemo(() => rightAnswer?.id_answers, [rightAnswer])
 
@@ -107,28 +109,48 @@ const TestsPage = () => {
 
 	useEffect(() => {
 		getQuestions()
-		streamOn()
-		screenOn()
+		// streamOn()
+		// screenOn()
 	}, [])
 
+	// useEffect(() => {
+	// 	if (allTests.length > 0) {
+	// 		getSpecialQuestion()
+	// 		getSpecialAnswer()
+	// 		getSpecialRightAnswer()
+	// 		checkAnswer()
+	// 	}
+	// }, [id_question, choseAnswer, allTests])
 	useEffect(() => {
 		if (allTests.length > 0) {
 			getSpecialQuestion()
+
+			// checkAnswer()
+		}
+		if (id_question) {
 			getSpecialAnswer()
 			getSpecialRightAnswer()
-			checkAnswer()
 		}
-	}, [id_question, choseAnswer, allTests])
+	}, [allTests, currentIndex, id_question, choseAnswer])
 
-	useEffect(() => {
-		takeAndUploadScreenshot()
-	}, [isScreenStart, isTimeToUpload])
+	// useEffect(() => {
+	// 	takeAndUploadScreenshot()
+	// }, [isScreenStart, isTimeToUpload])
 
 	const percentageOfProgress = (id_question / allTests.length) * 100
 	const percentageOfRightAnswer = (
 		(countRightAnswers / allTests.length) *
 		100
 	).toFixed(2)
+
+	const handleNextQuestion = () => {
+		// Если достигли конца массива, сбрасываем индекс на 0
+		if (currentIndex === allTests.length - 1) {
+			setCurrentIndex(0)
+		} else {
+			setCurrentIndex(prevIndex => prevIndex + 1) // Увеличиваем индекс на 1
+		}
+	}
 
 	return (
 		<>
@@ -182,7 +204,7 @@ const TestsPage = () => {
 												<AnswerItem
 													key={item.id_answers}
 													item={item}
-													nextQuestion={nextQuestion}
+													nextQuestion={handleNextQuestion}
 													allTests={allTests}
 													checkAnswer={checkAnswer}
 													isRight={isRight}

@@ -5,7 +5,8 @@ const useGetQuestions = chosedQuestion => {
 	const { request } = useHttp()
 	const [allTests, setAllTests] = useState([])
 	const [test, setTest] = useState()
-	const [id_question, setIdQuestion] = useState(1)
+	const [id_question, setIdQuestion] = useState(null)
+	const [currentIndex, setCurrentIndex] = useState(0)
 
 	const getQuestions = async () => {
 		const { data } = await request('/tests')
@@ -13,8 +14,10 @@ const useGetQuestions = chosedQuestion => {
 	}
 
 	const getSpecialQuestion = async () => {
-		const { data } = await request(`/tests/special/${id_question}`)
-		setTest(data)
+		// const { data } = await request(`/tests/special/${id_question}`)
+		// setTest(data)
+		setTest(allTests[currentIndex])
+		setIdQuestion(allTests[currentIndex].id_question)
 	}
 
 	const getSpecialQuestionForEdit = async () => {
@@ -30,6 +33,8 @@ const useGetQuestions = chosedQuestion => {
 		setIdQuestion,
 		getSpecialQuestion,
 		getSpecialQuestionForEdit,
+		currentIndex,
+		setCurrentIndex,
 	}
 }
 
