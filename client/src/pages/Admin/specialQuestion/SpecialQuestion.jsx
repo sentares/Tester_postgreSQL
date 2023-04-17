@@ -25,6 +25,8 @@ const SpecialQuestion = () => {
 
 	const { getSpecialQuestionForEdit, test } = useGetQuestions(chosedQuestion)
 
+	console.log(test)
+
 	const nextQuestion = () => {
 		console.log('adminClick')
 	}

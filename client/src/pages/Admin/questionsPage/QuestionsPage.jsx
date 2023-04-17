@@ -18,6 +18,8 @@ const QuestionsPage = () => {
 		getQuestions()
 	}, [])
 
+	console.log(allTests)
+
 	return (
 		<div className={styles.QuestionsPage}>
 			<GoHome />

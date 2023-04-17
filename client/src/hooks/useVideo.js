@@ -24,7 +24,7 @@ const useVideo = id_student => {
 			if (mediaStream) {
 				mediaStream.getTracks().forEach(track => track.stop())
 				setMediaStream(null)
-				console.log('streamOff')
+				// console.log('streamOff')
 			}
 		} catch (e) {
 			console.log(e)
@@ -42,13 +42,13 @@ const useVideo = id_student => {
 		}
 		recorder.start()
 		setMediaRecorder(recorder)
-		console.log('start')
+		// console.log('start')
 	}
 
 	const stopRecording = () => {
 		mediaRecorder.stop()
 		setMediaRecorder(null)
-		console.log('stop')
+		// console.log('stop')
 	}
 
 	const handleUpload = async () => {
@@ -58,7 +58,7 @@ const useVideo = id_student => {
 		formData.append('video', blob, 'video.webm')
 		try {
 			const { message } = await request('/video', 'POST', formData)
-			console.log(message)
+			// console.log(message)
 		} catch (e) {
 			console.log(e)
 		}

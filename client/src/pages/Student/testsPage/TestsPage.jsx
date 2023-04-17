@@ -113,19 +113,15 @@ const TestsPage = () => {
 		screenOn()
 	}, [])
 
-	// useEffect(() => {
-	// 	if (allTests.length > 0) {
-	// 		getSpecialQuestion()
-	// 		getSpecialAnswer()
-	// 		getSpecialRightAnswer()
-	// 		checkAnswer()
-	// 	}
-	// }, [id_question, choseAnswer, allTests])
+	useEffect(() => {
+		if (allTests.length > 0) {
+			checkAnswer()
+		}
+	}, [choseAnswer])
+
 	useEffect(() => {
 		if (allTests.length > 0) {
 			getSpecialQuestion()
-
-			checkAnswer()
 		}
 		if (id_question) {
 			getSpecialAnswer()
@@ -143,6 +139,8 @@ const TestsPage = () => {
 		100
 	).toFixed(2)
 
+	console.log(countRightAnswers, 'right')
+
 	const handleNextQuestion = () => {
 		if (currentIndex === allTests.length - 1) {
 			setCurrentIndex(-1)
@@ -150,7 +148,6 @@ const TestsPage = () => {
 			setCurrentIndex(prevIndex => prevIndex + 1)
 		}
 	}
-	console.log(answers)
 
 	return (
 		<>
