@@ -8,12 +8,9 @@ import styles from './admin.module.css'
 const AdminPage = () => {
 	const dispatch = useDispatch()
 	const { request } = useHttp()
-	// const [studentInfo, setStudentInfo] = useState([])
 	const user = useSelector(state => state.auth.user)
 	const [isLoading, setIsLoading] = useState(false)
 	const navigate = useNavigate()
-
-	const { id_student } = user
 
 	const logout = async () => {
 		await request('/auth/logout')
@@ -29,21 +26,6 @@ const AdminPage = () => {
 		navigate('/')
 	}
 
-	// const fetchStudentData = async () => {
-	// 	setIsLoading(true)
-	// 	try {
-	// 		const { data } = await request(`/checkStudent/${id_student}`)
-	// 		setStudentInfo(data)
-	// 	} catch (error) {
-	// 		console.error(error)
-	// 	}
-	// 	setIsLoading(false)
-	// }
-
-	// useEffect(() => {
-	// 	fetchStudentData()
-	// }, [setIsLoading])
-
 	return (
 		<>
 			{isLoading ? (
@@ -54,10 +36,8 @@ const AdminPage = () => {
 						<div className={styles.adminName}>{user.name}</div>
 						<div className={styles.choseBlock}>
 							<div>
-								<Link to='/check'>
-									<button className={styles.testButton}>
-										Список студентов
-									</button>
+								<Link to='/createCourse'>
+									<button className={styles.testButton}>Создать курс</button>
 								</Link>
 							</div>
 							<div>

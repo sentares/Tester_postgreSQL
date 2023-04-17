@@ -13,19 +13,23 @@ const RegisterPage = () => {
 	const [form, setForm] = useState({
 		login: '',
 		name: '',
+		patronymic: '',
+		surname: '',
 		password: '',
 	})
 	const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false)
 
 	const handleRegister = async e => {
 		e.preventDefault()
-		const { name, login, password } = form
+		const { name, surname, patronymic, login, password } = form
 
 		if (!isCaptchaSuccessful) {
 			return toast.warn('Подтвердите что вы не робот')
 		}
 		if (
 			name.trim().length &&
+			surname.trim().length &&
+			patronymic.trim().length &&
 			login.trim().length &&
 			password.trim().length &&
 			isCaptchaSuccessful
@@ -37,6 +41,8 @@ const RegisterPage = () => {
 					login: login.trim(),
 					password: password.trim(),
 					name: name.trim(),
+					surname: name.trim(),
+					patronymic: name.trim(),
 				}
 			)
 			toast[type](message)
@@ -67,6 +73,26 @@ const RegisterPage = () => {
 								className={styles.registerInput}
 								placeholder='Ваше имя'
 								value={form.name}
+								onChange={change}
+							/>
+						</div>
+						<div className={styles.inputBlock}>
+							<input
+								type='name'
+								name='surname'
+								className={styles.registerInput}
+								placeholder='Ваша фамилия'
+								value={form.surname}
+								onChange={change}
+							/>
+						</div>
+						<div className={styles.inputBlock}>
+							<input
+								type='name'
+								name='patronymic'
+								className={styles.registerInput}
+								placeholder='Ваше отчество'
+								value={form.patronymic}
 								onChange={change}
 							/>
 						</div>

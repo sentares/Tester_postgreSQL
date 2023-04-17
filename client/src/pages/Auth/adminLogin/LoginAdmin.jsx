@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import styles from './login.module.css'
+import styles from './loginAdmin.module.css'
 import { toast } from 'react-toastify'
 import { useHttp } from '../../../hooks/useHttp'
 import { useDispatch, useSelector } from 'react-redux'
 import { setIsAuth, setUser } from '../../../redux/slices/authSlice'
 import ReCAPTCHA from 'react-google-recaptcha'
 
-const LoginPage = () => {
+const LoginAdmin = () => {
 	const { request, loader } = useHttp()
 	const dispath = useDispatch()
 	const recaptchaKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY
 	const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false)
+	const user = useSelector(state => state.auth.user)
+	const isAuth = useSelector(state => state.auth.isAuth)
 
 	const getData = data => {
 		dispath(setUser(data))
@@ -30,11 +32,10 @@ const LoginPage = () => {
 		}
 		if (login.trim().length && password.trim().length) {
 			const { data, accessToken, message, type } = await request(
-				'/auth/login',
+				'/auth/loginAdmin',
 				'POST',
 				{ login: login.trim(), password: password.trim() }
 			)
-			console.log(data)
 			toast[type](message)
 			if (accessToken.length) {
 				getData(data)
@@ -54,6 +55,7 @@ const LoginPage = () => {
 		<div className={styles.registerPage}>
 			<div className={styles.registerBlock}>
 				<form>
+					<div>ADMIN</div>
 					<div className={styles.registerInputs}>
 						<div className={styles.inputBlock}>
 							<input
@@ -96,4 +98,4 @@ const LoginPage = () => {
 	)
 }
 
-export default LoginPage
+export default LoginAdmin

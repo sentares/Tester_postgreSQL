@@ -13,6 +13,8 @@ const HomePage = () => {
 
 	const { id_student } = user
 
+	console.log(user)
+
 	const logout = async () => {
 		await request('/auth/logout')
 		dispatch(

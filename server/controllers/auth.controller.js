@@ -8,7 +8,6 @@ class AuthController {
 	async login(req, res) {
 		try {
 			const data = req.body
-
 			const { rows } = await db.query('select * from students where login=$1', [
 				data.login,
 			])
@@ -22,7 +21,16 @@ class AuthController {
 				})
 			}
 
-			const { name, password, login, id_student, is_admin } = await rows[0]
+			const {
+				name,
+				surname,
+				patronymic,
+				password,
+				login,
+				id_student,
+				is_admin,
+				role,
+			} = await rows[0]
 
 			const isPassword = await bcrypt.compare(data.password, password)
 
@@ -36,7 +44,7 @@ class AuthController {
 			}
 
 			const token = jwt.sign(
-				{ name, login, id_student, is_admin },
+				{ name, surname, patronymic, login, id_student, is_admin, role },
 				process.env.SECRET_KEY
 			)
 
@@ -49,7 +57,15 @@ class AuthController {
 				.json({
 					message: 'Авторизация прошла успешно',
 					type: 'success',
-					data: { name, login, id_student, is_admin },
+					data: {
+						name,
+						surname,
+						patronymic,
+						login,
+						id_student,
+						is_admin,
+						role,
+					},
 					accessToken: token,
 				})
 		} catch (e) {
@@ -59,7 +75,7 @@ class AuthController {
 
 	async register(req, res) {
 		try {
-			const { name, password, login } = req.body
+			const { name, surname, patronymic, password, login } = req.body
 
 			const { rows } = await db.query('select * from students where login=$1', [
 				login,
@@ -76,8 +92,8 @@ class AuthController {
 			const hashPassword = await bcrypt.hash(password, 12)
 
 			const { rows: arrId } = await db.query(
-				'insert into students (login, password, name) values ($1, $2, $3) returning id_student',
-				[login, hashPassword, name]
+				'insert into students (login, password, name, surname, patronymic) values ($1, $2, $3, $4, $5) returning id_student',
+				[login, hashPassword, name, surname, patronymic]
 			)
 
 			if (arrId.length) {
@@ -150,6 +166,59 @@ class AuthController {
 				type: 'success',
 				data: {},
 			})
+		} catch (e) {
+			console.log(e)
+		}
+	}
+
+	async loginAdmin(req, res) {
+		try {
+			const data = req.body
+
+			const { rows } = await db.query('select * from users where login=$1', [
+				data.login,
+			])
+
+			if (!rows.length) {
+				return res.status(303).json({
+					message: 'Такой пользователь не существует',
+					type: 'warn',
+					data: {},
+					accessToken: '',
+				})
+			}
+
+			const { name, password, login, id_user, activ, try_count, role } =
+				await rows[0]
+
+			const isPassword = await bcrypt.compare(data.password, password)
+
+			if (!isPassword) {
+				return res.status(303).json({
+					message: 'Неправильный пароль',
+					type: 'warn',
+					data: {},
+					accessToken: '',
+				})
+			}
+
+			const token = jwt.sign(
+				{ name, login, id_user, activ, try_count },
+				process.env.SECRET_KEY
+			)
+
+			res
+				.status(202)
+				.cookie('token', token, {
+					httpOnly: true,
+					maxAge: 100 * 60 * 60 * 24 * 30,
+				})
+				.json({
+					message: 'Авторизация прошла успешно',
+					type: 'success',
+					data: { name, login, id_user, activ, try_count, role },
+					accessToken: token,
+				})
 		} catch (e) {
 			console.log(e)
 		}
