@@ -17,7 +17,11 @@ const useGetQuestions = chosedQuestion => {
 		// const { data } = await request(`/tests/special/${id_question}`)
 		// setTest(data)
 		setTest(allTests[currentIndex])
-		setIdQuestion(allTests[currentIndex].id_question)
+		if (currentIndex !== -1) {
+			setIdQuestion(allTests[currentIndex].id_question)
+		} else {
+			return
+		}
 	}
 
 	const getSpecialQuestionForEdit = async () => {

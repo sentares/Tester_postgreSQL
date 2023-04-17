@@ -32,7 +32,7 @@ const TestsPage = () => {
 		id_question,
 		getQuestions,
 		getSpecialQuestion,
-		// setIdQuestion,
+		setIdQuestion,
 		currentIndex,
 		setCurrentIndex,
 	} = useGetQuestions()
@@ -62,13 +62,13 @@ const TestsPage = () => {
 		try {
 			setState(prevState => ({ ...prevState, loader: true }))
 			setState(prevState => ({ ...prevState, showModal: false }))
-			// const stream = await navigator.mediaDevices.getUserMedia({
-			// 	video: true,
-			// })
-			// setMediaStream(stream)
-			// videoRef.current.srcObject = stream
-			// startScreen()
-			// startRecording()
+			const stream = await navigator.mediaDevices.getUserMedia({
+				video: true,
+			})
+			setMediaStream(stream)
+			videoRef.current.srcObject = stream
+			startScreen()
+			startRecording()
 		} catch (error) {
 			console.log(error)
 			toast.warn('Для продолжения необходимо предоставить доступ к камере')
@@ -81,11 +81,11 @@ const TestsPage = () => {
 		toast.warn('Для продолжения необходимо предоставить доступ к камере')
 	}, [])
 
-	// const nextQuestion = useCallback(() => {
-	// 	setIdQuestion(id_question =>
-	// 		id_question < allTests.length ? id_question + 1 : 0
-	// 	)
-	// }, [allTests.length, setIdQuestion])
+	const nextQuestion = useCallback(() => {
+		setIdQuestion(id_question =>
+			id_question < allTests.length ? id_question + 1 : 0
+		)
+	}, [allTests.length, setIdQuestion])
 
 	const id_answers = useMemo(() => rightAnswer?.id_answers, [rightAnswer])
 
@@ -109,8 +109,8 @@ const TestsPage = () => {
 
 	useEffect(() => {
 		getQuestions()
-		// streamOn()
-		// screenOn()
+		streamOn()
+		screenOn()
 	}, [])
 
 	// useEffect(() => {
@@ -125,7 +125,7 @@ const TestsPage = () => {
 		if (allTests.length > 0) {
 			getSpecialQuestion()
 
-			// checkAnswer()
+			checkAnswer()
 		}
 		if (id_question) {
 			getSpecialAnswer()
@@ -133,24 +133,24 @@ const TestsPage = () => {
 		}
 	}, [allTests, currentIndex, id_question, choseAnswer])
 
-	// useEffect(() => {
-	// 	takeAndUploadScreenshot()
-	// }, [isScreenStart, isTimeToUpload])
+	useEffect(() => {
+		takeAndUploadScreenshot()
+	}, [isScreenStart, isTimeToUpload])
 
-	const percentageOfProgress = (id_question / allTests.length) * 100
+	const percentageOfProgress = (currentIndex / allTests.length) * 100
 	const percentageOfRightAnswer = (
 		(countRightAnswers / allTests.length) *
 		100
 	).toFixed(2)
 
 	const handleNextQuestion = () => {
-		// Если достигли конца массива, сбрасываем индекс на 0
 		if (currentIndex === allTests.length - 1) {
-			setCurrentIndex(0)
+			setCurrentIndex(-1)
 		} else {
-			setCurrentIndex(prevIndex => prevIndex + 1) // Увеличиваем индекс на 1
+			setCurrentIndex(prevIndex => prevIndex + 1)
 		}
 	}
+	console.log(answers)
 
 	return (
 		<>
@@ -172,7 +172,7 @@ const TestsPage = () => {
 			<div className={styles.testPage}>
 				<GoHome />
 				<div className={styles.questionsBlock}>
-					{id_question ? (
+					{currentIndex !== -1 ? (
 						<div className={styles.quest}>
 							<div
 								className={styles.progressBar}
@@ -181,9 +181,7 @@ const TestsPage = () => {
 							<div className={styles.questions}>
 								{test && (
 									<div>
-										<div className={styles.question}>
-											{test.question.question}
-										</div>
+										<div className={styles.question}>{test.question}</div>
 										{test.image && (
 											<div className={styles.imageBlock}>
 												<img
