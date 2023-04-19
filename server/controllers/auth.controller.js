@@ -21,16 +21,8 @@ class AuthController {
 				})
 			}
 
-			const {
-				name,
-				surname,
-				patronymic,
-				password,
-				login,
-				id_student,
-				is_admin,
-				role,
-			} = await rows[0]
+			const { name, surname, patronymic, password, login, id_student, role } =
+				await rows[0]
 
 			const isPassword = await bcrypt.compare(data.password, password)
 
@@ -44,7 +36,7 @@ class AuthController {
 			}
 
 			const token = jwt.sign(
-				{ name, surname, patronymic, login, id_student, is_admin, role },
+				{ name, surname, patronymic, login, id_student, role },
 				process.env.SECRET_KEY
 			)
 
@@ -63,13 +55,17 @@ class AuthController {
 						patronymic,
 						login,
 						id_student,
-						is_admin,
 						role,
 					},
 					accessToken: token,
 				})
 		} catch (e) {
 			console.log(e)
+			res.status(500).json({
+				message: 'Ошибка в сервер',
+				type: 'error',
+				data: [],
+			})
 		}
 	}
 
@@ -143,19 +139,48 @@ class AuthController {
 				})
 			}
 
-			const { name, login, id_student, is_admin } = jwt.verify(
-				token,
-				process.env.SECRET_KEY
-			)
+			try {
+				// Проверяем токен для студента
+				const { name, surname, patronymic, login, id_student, role } =
+					jwt.verify(token, process.env.SECRET_KEY)
 
-			res.status(202).json({
-				message: 'Вы авторизованы',
-				type: 'success',
-				data: { name, login, id_student, is_admin },
-				accessToken: token,
-			})
+				res.status(202).json({
+					message: 'Вы авторизованы',
+					type: 'success',
+					data: { name, surname, patronymic, login, id_student, role },
+					accessToken: token,
+				})
+			} catch (studentTokenError) {
+				try {
+					// Если токен для студента не прошел проверку, проверяем токен для админа
+					const { name, login, id_user, activ, try_count, role } = jwt.verify(
+						token,
+						process.env.SECRET_KEY
+					)
+
+					res.status(202).json({
+						message: 'Вы авторизованы',
+						type: 'success',
+						data: { name, login, id_user, activ, try_count, role },
+						accessToken: token,
+					})
+				} catch (adminTokenError) {
+					// Если оба токена не прошли проверку, возвращаем сообщение об ошибке
+					return res.status(401).json({
+						message: 'Неправильный токен',
+						type: 'error',
+						data: {},
+						accessToken: '',
+					})
+				}
+			}
 		} catch (e) {
 			console.log(e)
+			res.status(500).json({
+				message: 'Ошибка в сервер',
+				type: 'error',
+				data: [],
+			})
 		}
 	}
 
@@ -168,6 +193,11 @@ class AuthController {
 			})
 		} catch (e) {
 			console.log(e)
+			res.status(500).json({
+				message: 'Ошибка в сервер',
+				type: 'error',
+				data: [],
+			})
 		}
 	}
 
@@ -191,11 +221,21 @@ class AuthController {
 			const { name, password, login, id_user, activ, try_count, role } =
 				await rows[0]
 
+			if (!activ) {
+				return res.status(401).json({
+					message: 'У вас нет полномочий для входа',
+					type: 'error',
+					data: { activ },
+					accessToken: '',
+				})
+			}
+
 			if (try_count >= 5) {
+				await db.query(`update users set activ=false where id_user=${id_user}`)
 				return res.status(401).json({
 					message: 'Вы превысили лимит попыток входа.',
 					type: 'error',
-					data: { try_count },
+					data: { try_count, activ },
 					accessToken: '',
 				})
 			}
@@ -216,7 +256,7 @@ class AuthController {
 			}
 
 			const token = jwt.sign(
-				{ name, login, id_user, activ, try_count },
+				{ name, login, id_user, activ, try_count, role },
 				process.env.SECRET_KEY
 			)
 
@@ -236,6 +276,11 @@ class AuthController {
 				})
 		} catch (e) {
 			console.log(e)
+			res.status(500).json({
+				message: 'Ошибка в сервер',
+				type: 'error',
+				data: [],
+			})
 		}
 	}
 }

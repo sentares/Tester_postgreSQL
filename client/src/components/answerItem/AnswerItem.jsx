@@ -4,7 +4,7 @@ import { BiPencil } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux'
 import { setChoseAnswer } from '../../redux/slices/answerSlice'
 import { setOpenEditAnswerModal } from '../../redux/slices/modalSlice'
-import EditAnswerModal from '../modal/editAnswerModal.jsx/EditAnswerModal'
+import EditAnswerModal from '../modal/editAnswerModal/EditAnswerModal'
 import styles from './answerItem.module.css'
 
 const AnswerItem = ({ item, nextQuestion, checkAnswer, isRight, user }) => {

@@ -11,7 +11,7 @@ const LoginPage = () => {
 	const { request, loader } = useHttp()
 	const dispath = useDispatch()
 	const recaptchaKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY
-	const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false)
+	const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(true)
 
 	const getData = data => {
 		dispath(setUser(data))
@@ -75,9 +75,9 @@ const LoginPage = () => {
 								onChange={change}
 							/>
 						</div>
-						<div className={styles.captcha}>
+						{/* <div className={styles.captcha}>
 							<ReCAPTCHA sitekey={recaptchaKey} onChange={onChangeRecap} />
-						</div>
+						</div> */}
 						<button className={styles.buttonRegister} onClick={handleLogin}>
 							Войти
 						</button>

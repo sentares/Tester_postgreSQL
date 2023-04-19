@@ -5,7 +5,6 @@ const initialState = {
 		name: '',
 		login: '',
 		id_student: null,
-		is_admin: null,
 		role: null,
 	},
 	loader: false,

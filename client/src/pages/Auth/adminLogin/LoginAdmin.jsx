@@ -1,25 +1,25 @@
 import React, { useState } from 'react'
+import ReCAPTCHA from 'react-google-recaptcha'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import styles from './loginAdmin.module.css'
 import { toast } from 'react-toastify'
 import { useHttp } from '../../../hooks/useHttp'
-import { useDispatch, useSelector } from 'react-redux'
 import { setIsAuth, setUser } from '../../../redux/slices/authSlice'
-import ReCAPTCHA from 'react-google-recaptcha'
+import styles from './loginAdmin.module.css'
 
 const LoginAdmin = () => {
-	const { request, loader } = useHttp()
+	const { request } = useHttp()
 	const dispath = useDispatch()
 	const recaptchaKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY
-	const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false)
+	const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(true)
 	const [tryCount, setTryCount] = useState(null)
-	const user = useSelector(state => state.auth.user)
-	const isAuth = useSelector(state => state.auth.isAuth)
+	const [isActive, setIsActive] = useState(true)
 
 	const getData = data => {
 		dispath(setUser(data))
 		dispath(setIsAuth(true))
 	}
+
 	const [form, setForm] = useState({
 		login: '',
 		password: '',
@@ -38,7 +38,7 @@ const LoginAdmin = () => {
 				{ login: login.trim(), password: password.trim() }
 			)
 			toast[type](message)
-
+			setIsActive(data.activ)
 			setTryCount(data.try_count)
 			if (accessToken.length) {
 				getData(data)
@@ -55,7 +55,6 @@ const LoginAdmin = () => {
 
 	let stayedCount = 5 - tryCount
 
-	console.log(tryCount)
 	return (
 		<div className={styles.registerPage}>
 			<div className={styles.registerBlock}>
@@ -82,16 +81,17 @@ const LoginAdmin = () => {
 								onChange={change}
 							/>
 						</div>
-						<div className={styles.captcha}>
+						{/* <div className={styles.captcha}>
 							<ReCAPTCHA sitekey={recaptchaKey} onChange={onChangeRecap} />
-						</div>
-						{stayedCount !== 0 ? (
+						</div> */}
+						{stayedCount !== 0 || isActive ? (
 							<button className={styles.buttonRegister} onClick={handleLogin}>
 								Войти
 							</button>
 						) : (
 							<button className={styles.buttonStoped}>
-								Вы превысили лимит попыток входа. Обратитесь к администратору.
+								Ваша учетная запись временно заблокирована из-за нескольких
+								неудачных попыток авторизации. Обратитесь к администратору.
 							</button>
 						)}
 						{tryCount && <div>Осталось попыток: {stayedCount}</div>}

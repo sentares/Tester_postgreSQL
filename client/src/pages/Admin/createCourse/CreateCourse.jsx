@@ -15,7 +15,7 @@ const CreateCourse = () => {
 	const change = e => setForm({ ...form, [e.target.name]: e.target.value })
 
 	const handleUploadCourse = async () => {
-		createCourse(form)
+		createCourse()
 	}
 
 	return (

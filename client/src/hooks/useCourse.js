@@ -13,7 +13,7 @@ const useCourse = form => {
 				nameOfCourse,
 				descriptionOfCourse,
 			})
-			toast[type](message)
+			// window.location('/adminPage')
 		} catch (e) {
 			console.log(e)
 		}

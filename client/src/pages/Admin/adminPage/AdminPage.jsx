@@ -20,6 +20,7 @@ const AdminPage = () => {
 				login: '',
 				id_student: null,
 				is_admin: null,
+				role: null,
 			})
 		)
 		dispatch(setIsAuth(false))
@@ -46,9 +47,9 @@ const AdminPage = () => {
 								</Link>
 							</div>
 							<div>
-								<Link to='/createTeacher'>
+								<Link to='/teacherList'>
 									<button className={styles.testButton}>
-										Добавить преподователя
+										Список преподователей
 									</button>
 								</Link>
 							</div>
