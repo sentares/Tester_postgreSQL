@@ -23,6 +23,7 @@ const HomePage = () => {
 				login: '',
 				id_student: null,
 				is_admin: null,
+				role: null,
 			})
 		)
 		dispatch(setIsAuth(false))

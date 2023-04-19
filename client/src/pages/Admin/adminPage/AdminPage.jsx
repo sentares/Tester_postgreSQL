@@ -41,8 +41,15 @@ const AdminPage = () => {
 								</Link>
 							</div>
 							<div>
-								<Link to='/questions'>
-									<button className={styles.testButton}>Список вопросов</button>
+								<Link to='/courseList'>
+									<button className={styles.testButton}>Список курсов</button>
+								</Link>
+							</div>
+							<div>
+								<Link to='/createTeacher'>
+									<button className={styles.testButton}>
+										Добавить преподователя
+									</button>
 								</Link>
 							</div>
 							<div>

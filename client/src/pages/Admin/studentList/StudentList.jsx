@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import GoHome from '../../../components/goHome/GoHome'
 import StudentItem from '../../../components/studentItem/StudentItem'
 import useStudents from '../../../hooks/useStudents'

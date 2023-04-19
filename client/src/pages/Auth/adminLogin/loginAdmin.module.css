@@ -40,6 +40,20 @@
 	background-color: green;
 }
 
+.buttonStoped {
+	padding: 14px 12px;
+	margin-left: 0;
+	width: 100%;
+	margin-top: 12px;
+	color: white;
+	background-color: rgb(172, 56, 40);
+	font-size: 20px;
+	font-weight: 700;
+}
+.buttonStoped:hover {
+	background-color: rgb(124, 35, 35);
+}
+
 .haveAcc {
 	margin-top: 24px;
 }

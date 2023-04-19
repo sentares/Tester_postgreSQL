@@ -12,6 +12,7 @@ const LoginAdmin = () => {
 	const dispath = useDispatch()
 	const recaptchaKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY
 	const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false)
+	const [tryCount, setTryCount] = useState(null)
 	const user = useSelector(state => state.auth.user)
 	const isAuth = useSelector(state => state.auth.isAuth)
 
@@ -37,6 +38,8 @@ const LoginAdmin = () => {
 				{ login: login.trim(), password: password.trim() }
 			)
 			toast[type](message)
+
+			setTryCount(data.try_count)
 			if (accessToken.length) {
 				getData(data)
 			}
@@ -46,11 +49,13 @@ const LoginAdmin = () => {
 	}
 
 	const change = e => setForm({ ...form, [e.target.name]: e.target.value })
-
 	const onChangeRecap = () => {
 		setIsCaptchaSuccess(true)
 	}
 
+	let stayedCount = 5 - tryCount
+
+	console.log(tryCount)
 	return (
 		<div className={styles.registerPage}>
 			<div className={styles.registerBlock}>
@@ -80,9 +85,16 @@ const LoginAdmin = () => {
 						<div className={styles.captcha}>
 							<ReCAPTCHA sitekey={recaptchaKey} onChange={onChangeRecap} />
 						</div>
-						<button className={styles.buttonRegister} onClick={handleLogin}>
-							Войти
-						</button>
+						{stayedCount !== 0 ? (
+							<button className={styles.buttonRegister} onClick={handleLogin}>
+								Войти
+							</button>
+						) : (
+							<button className={styles.buttonStoped}>
+								Вы превысили лимит попыток входа. Обратитесь к администратору.
+							</button>
+						)}
+						{tryCount && <div>Осталось попыток: {stayedCount}</div>}
 						<div className={styles.haveAcc}>
 							<p className={styles.acc}>
 								Нет аккаунта?

@@ -191,13 +191,26 @@ class AuthController {
 			const { name, password, login, id_user, activ, try_count, role } =
 				await rows[0]
 
+			if (try_count >= 5) {
+				return res.status(401).json({
+					message: 'Вы превысили лимит попыток входа.',
+					type: 'error',
+					data: { try_count },
+					accessToken: '',
+				})
+			}
+
 			const isPassword = await bcrypt.compare(data.password, password)
 
 			if (!isPassword) {
+				await db.query(
+					`update users set try_count=${try_count + 1} where id_user=${id_user}`
+				)
+
 				return res.status(303).json({
 					message: 'Неправильный пароль',
 					type: 'warn',
-					data: {},
+					data: { try_count: try_count + 1 },
 					accessToken: '',
 				})
 			}
@@ -206,6 +219,8 @@ class AuthController {
 				{ name, login, id_user, activ, try_count },
 				process.env.SECRET_KEY
 			)
+
+			await db.query(`update users set try_count=0 where id_user=${id_user}`)
 
 			res
 				.status(202)
