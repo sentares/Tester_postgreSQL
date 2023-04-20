@@ -16,13 +16,12 @@ import RegisterPage from './Auth/register/RegisterPage'
 import HomePage from './Student/homePage/HomePage'
 import TestsPage from './Student/testsPage/TestsPage'
 import TESTER from './Test/TESTER'
+import SpecialTeacher from './Admin/specialTeacher/SpecialTeacher'
 
 const Router = () => {
 	const isAuth = useSelector(state => state.auth.isAuth)
 	const user = useSelector(state => state.auth.user)
 	const { role } = user
-	console.log(isAuth)
-	console.log(role)
 
 	if (isAuth && role === 1) {
 		return (
@@ -38,6 +37,7 @@ const Router = () => {
 				<Route path='/create' element={<CreateQuestion />} />
 				<Route path='/courseList' element={<CourseList />} />
 				<Route path='/teacherList' element={<TeacherList />} />
+				<Route path='/teacher/:id_teacher' element={<SpecialTeacher />} />
 				<Route path='/t' element={<TESTER />} />
 			</Routes>
 		)

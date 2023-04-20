@@ -1,0 +1,87 @@
+.specialTeacher {
+	background-color: #222;
+	color: #fff;
+	padding: 20px;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	max-width: 800px;
+	border-radius: 10px;
+}
+
+.teacherBlock {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 5px;
+	position: relative;
+}
+
+.editPen {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 5px;
+	font-size: 20px;
+	border-radius: 100%;
+	background-color: #616161;
+}
+.editPen:hover {
+	background-color: #888374;
+}
+
+.infoBlock {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	width: 92%;
+}
+
+.info {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 0;
+	width: 100%;
+}
+
+.info div:first-child {
+	margin-right: 10px;
+}
+
+.info div:last-child {
+	font-weight: 600;
+}
+
+.roleTeacher {
+	background-color: #486cbb;
+	color: #fff;
+	padding: 4px 8px;
+	border-radius: 4px;
+}
+
+.roleManager {
+	background-color: #ed8936;
+	color: #fff;
+	padding: 4px 8px;
+	border-radius: 4px;
+}
+
+.statusTrue {
+	background-color: #52bb48;
+	color: #fff;
+	padding: 4px 8px;
+	border-radius: 4px;
+}
+
+.statusFalse {
+	background-color: #ed5136;
+	color: #fff;
+	padding: 4px 8px;
+	border-radius: 4px;
+}

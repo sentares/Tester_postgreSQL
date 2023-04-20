@@ -1,0 +1,30 @@
+.teacherItem {
+	width: 97%;
+	background-color: #222;
+	padding: 10px;
+	border-radius: 10px;
+	margin-top: 10px;
+	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+}
+.teacherItem:hover {
+	transform: scale(1.02);
+	background-color: rgb(11, 44, 66);
+}
+
+.name {
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.role {
+	color: rgb(223, 223, 223);
+}
+
+.roleTeacher {
+	color: rgb(160, 160, 219);
+}
+
+.roleManager {
+	color: rgb(231, 166, 166);
+}
