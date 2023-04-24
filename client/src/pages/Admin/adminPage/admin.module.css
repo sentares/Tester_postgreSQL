@@ -44,8 +44,10 @@
 }
 
 .choseBlock {
+	margin: auto;
+	width: 100%;
 	display: flex;
-	gap: 25px;
+	justify-content: space-between;
 }
 
 .adminName {

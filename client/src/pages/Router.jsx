@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import AdminPage from './Admin/adminPage/AdminPage'
 import CourseList from './Admin/courseList/CourseList'
-import CreateCourse from './Admin/createCourse/CreateCourse'
 import CreateQuestion from './Admin/createQuestion/CreateQuestion'
 import QuestionsPage from './Admin/questionsPage/QuestionsPage'
 import SpecialQuestion from './Admin/specialQuestion/SpecialQuestion'
 import SpecialStudent from './Admin/specialStudent/SpecialStudent'
+import SpecialTeacher from './Admin/specialTeacher/SpecialTeacher'
 import StudentList from './Admin/studentList/StudentList'
 import TeacherList from './Admin/teacherList/TeacherList'
 import LoginAdmin from './Auth/adminLogin/LoginAdmin'
@@ -16,7 +16,7 @@ import RegisterPage from './Auth/register/RegisterPage'
 import HomePage from './Student/homePage/HomePage'
 import TestsPage from './Student/testsPage/TestsPage'
 import TESTER from './Test/TESTER'
-import SpecialTeacher from './Admin/specialTeacher/SpecialTeacher'
+import SpecialCourse from './Admin/specialCourse/SpecialCourse'
 
 const Router = () => {
 	const isAuth = useSelector(state => state.auth.isAuth)
@@ -30,12 +30,12 @@ const Router = () => {
 				<Route path='/' element={<Navigate replace to='/admin' />} />
 				<Route path='/admin' element={<AdminPage />} />
 				<Route path='/check' element={<StudentList />} />
-				<Route path='/createCourse' element={<CreateCourse />} />
 				<Route path='/student/:id_student' element={<SpecialStudent />} />
 				<Route path='/questions' element={<QuestionsPage />} />
 				<Route path='/question/:id_question' element={<SpecialQuestion />} />
 				<Route path='/create' element={<CreateQuestion />} />
 				<Route path='/courseList' element={<CourseList />} />
+				<Route path='/course/:id_course' element={<SpecialCourse />} />
 				<Route path='/teacherList' element={<TeacherList />} />
 				<Route path='/teacher/:id_teacher' element={<SpecialTeacher />} />
 				<Route path='/t' element={<TESTER />} />

@@ -36,28 +36,17 @@ const AdminPage = () => {
 					<div>
 						<div className={styles.adminName}>{user.name}</div>
 						<div className={styles.choseBlock}>
-							<div>
-								<Link to='/createCourse'>
-									<button className={styles.testButton}>Создать курс</button>
-								</Link>
-							</div>
-							<div>
-								<Link to='/courseList'>
-									<button className={styles.testButton}>Список курсов</button>
-								</Link>
-							</div>
-							<div>
-								<Link to='/teacherList'>
-									<button className={styles.testButton}>
-										Список преподователей
-									</button>
-								</Link>
-							</div>
-							<div>
-								<button className={styles.exitButton} onClick={logout}>
-									Выйти
+							<Link to='/courseList'>
+								<button className={styles.testButton}>Список курсов</button>
+							</Link>
+							<Link to='/teacherList'>
+								<button className={styles.testButton}>
+									Список преподователей
 								</button>
-							</div>
+							</Link>
+							<button className={styles.exitButton} onClick={logout}>
+								Выйти
+							</button>
 						</div>
 					</div>
 				</div>

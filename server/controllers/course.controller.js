@@ -1,6 +1,6 @@
 const db = require('../db/db')
 
-class CreateCourseController {
+class CourseController {
 	async createCourse(req, res) {
 		try {
 			const { nameOfCourse, descriptionOfCourse } = req.body
@@ -28,7 +28,7 @@ class CreateCourseController {
 	async getAllCourse(req, res) {
 		try {
 			const { rows } = await db.query(
-				'select * from course  order by id_course asc'
+				'select * from course order by id_course asc'
 			)
 
 			return res.status(200).json({
@@ -45,6 +45,28 @@ class CreateCourseController {
 			})
 		}
 	}
+
+	async getSpecialCourse(req, res) {
+		try {
+			const { id_course } = req.params
+			const { rows } = await db.query(
+				'select * from course where id_course=$1',
+				[id_course]
+			)
+			return res.status(200).json({
+				message: 'Курсы успешно получены',
+				type: 'success',
+				data: rows,
+			})
+		} catch (e) {
+			console.log(e)
+			res.status(500).json({
+				message: 'Ошибка в сервер',
+				status: 'error',
+				data: [],
+			})
+		}
+	}
 }
 
-module.exports = new CreateCourseController()
+module.exports = new CourseController()

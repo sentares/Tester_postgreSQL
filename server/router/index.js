@@ -10,7 +10,7 @@ app.use('/video', require('./video.route'))
 app.use('/screen', require('./screen.route'))
 app.use('/edit', require('./edit.route'))
 app.use('/tester', require('./tester.route'))
-app.use('/createCourse', require('./createCourse.route'))
+app.use('/course', require('./course.route'))
 app.use('/teacher', require('./teacher.route'))
 
 module.exports = app
