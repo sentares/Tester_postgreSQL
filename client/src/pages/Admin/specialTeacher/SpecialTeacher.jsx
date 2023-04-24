@@ -7,7 +7,7 @@ import { BiPencil } from 'react-icons/bi'
 const SpecialTeacher = () => {
 	const [formattedBirthday, setFormattedBirthday] = useState('')
 	const [isEditable, setIsEditable] = useState(false)
-	const [teacherData, setTeacherData] = useState({
+	const [form, setTeacherData] = useState({
 		birthday: '',
 		name: '',
 		surname: '',
@@ -20,28 +20,23 @@ const SpecialTeacher = () => {
 
 	const params = useParams()
 	const { id_teacher } = params
-	const { getSpecialTeahcer, specialTeacher } = useTeacher(
-		null,
-		null,
-		id_teacher
-	)
+	const { getSpecialTeahcer, specialTeacher, editTeacher, isSuccesRequest } =
+		useTeacher(form, null, id_teacher)
+
+	console.log(isSuccesRequest)
 
 	const handleEditTeacher = () => {
 		setIsEditable(!isEditable)
 	}
 
-	const handleSaveChanges = () => {
-		setIsEditable(false)
+	const handleSaveChanges = async () => {
+		await editTeacher()
 	}
 
 	const handleChange = e => {
 		const { name, value } = e.target
-		setTeacherData({ ...teacherData, [name]: value })
+		setTeacherData({ ...form, [name]: value })
 	}
-
-	useEffect(() => {
-		getSpecialTeahcer()
-	}, [])
 
 	useEffect(() => {
 		if (specialTeacher && specialTeacher.birthday) {
@@ -63,6 +58,14 @@ const SpecialTeacher = () => {
 		}
 	}, [specialTeacher])
 
+	useEffect(() => {
+		getSpecialTeahcer()
+	}, [])
+
+	useEffect(() => {
+		setIsEditable(false)
+	}, [isSuccesRequest])
+
 	return (
 		<div className={styles.specialTeacher}>
 			{specialTeacher ? (
@@ -73,17 +76,52 @@ const SpecialTeacher = () => {
 						</button>
 						<div className={styles.infoBlock}>
 							<div className={styles.info}>
-								<div>ФИО:</div>
-								<div>{`${specialTeacher.name} ${specialTeacher.surname} ${specialTeacher.patronymic}`}</div>
+								<div>Фамилия:</div>
+								{isEditable ? (
+									<input
+										name='surname'
+										value={form.surname}
+										onChange={handleChange}
+										className={styles.changeInput}
+									/>
+								) : (
+									<div>{specialTeacher.surname}</div>
+								)}
+							</div>
+							<div className={styles.info}>
+								<div>Имя:</div>
+								{isEditable ? (
+									<input
+										name='name'
+										value={form.name}
+										onChange={handleChange}
+										className={styles.changeInput}
+									/>
+								) : (
+									<div>{specialTeacher.name}</div>
+								)}
+							</div>
+							<div className={styles.info}>
+								<div>Отчество:</div>
+								{isEditable ? (
+									<input
+										name='patronymic'
+										value={form.patronymic}
+										onChange={handleChange}
+										className={styles.changeInput}
+									/>
+								) : (
+									<div>{specialTeacher.patronymic}</div>
+								)}
 							</div>
 							<div className={styles.info}>
 								<div>Email:</div>
 								{isEditable ? (
 									<input
-										type='text'
 										name='email'
-										value={teacherData.email}
+										value={form.email}
 										onChange={handleChange}
+										className={styles.changeInput}
 									/>
 								) : (
 									<div>{specialTeacher.email}</div>
@@ -94,8 +132,9 @@ const SpecialTeacher = () => {
 								{isEditable ? (
 									<select
 										name='status'
-										value={teacherData.status}
+										value={form.status}
 										onChange={handleChange}
+										className={styles.changeInput}
 									>
 										<option value={true}>Работает</option>
 										<option value={false}>Не работает</option>
@@ -114,8 +153,9 @@ const SpecialTeacher = () => {
 								<div>Роль:</div>
 								{isEditable ? (
 									<select
+										className={styles.changeInput}
 										name='role'
-										value={teacherData.role}
+										value={form.role}
 										onChange={handleChange}
 									>
 										<option value={3}>Менеджер</option>
@@ -135,9 +175,10 @@ const SpecialTeacher = () => {
 								<div>ИНН:</div>
 								{isEditable ? (
 									<input
+										className={styles.changeInput}
 										type='number'
 										name='temp_inn'
-										value={teacherData.temp_inn}
+										value={form.temp_inn}
 										onChange={handleChange}
 									/>
 								) : (
@@ -148,9 +189,10 @@ const SpecialTeacher = () => {
 								<div>Дата рождения:</div>
 								{isEditable ? (
 									<input
+										className={styles.changeInput}
 										type='date'
 										name='birthday'
-										value={teacherData.birthday}
+										value={form.birthday}
 										onChange={handleChange}
 									/>
 								) : (

@@ -11,10 +11,10 @@ const TeacherList = () => {
 		surname: '',
 		patronymic: '',
 		birthday: '',
-		inn: '',
+		temp_inn: '',
 		email: '',
 		password: '',
-		role: 3,
+		role: 2,
 	})
 
 	const change = e => setForm({ ...form, [e.target.name]: e.target.value })

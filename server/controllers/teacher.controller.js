@@ -72,13 +72,13 @@ class TeacherController {
 				birthday,
 				password,
 				email,
-				inn,
+				temp_inn,
 				role,
 			} = req.body
 
 			const { rows } = await db.query(
 				'select * from teachers where temp_inn=$1',
-				[inn]
+				[temp_inn]
 			)
 
 			if (rows.length) {
@@ -92,7 +92,16 @@ class TeacherController {
 
 			const data = db.query(
 				'INSERT INTO teachers (name, surname, patronymic, birthday, password, email, temp_inn, role) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) returning *',
-				[name, surname, patronymic, birthday, hashPassword, email, inn, role]
+				[
+					name,
+					surname,
+					patronymic,
+					birthday,
+					hashPassword,
+					email,
+					temp_inn,
+					role,
+				]
 			)
 
 			return res.status(200).json({
@@ -112,19 +121,28 @@ class TeacherController {
 
 	async editTeacher(req, res) {
 		try {
+			const { id_teacher } = req.params
 			const {
 				name,
 				surname,
 				patronymic,
 				birthday,
-				password,
 				email,
-				inn,
+				temp_inn,
 				role,
 				status,
 			} = req.body
 
-			const { rows } = db.query('')
+			const { rows } = await db.query(
+				`UPDATE teachers SET name='${name}', surname='${surname}', patronymic='${patronymic}', birthday='${birthday}', email='${email}', temp_inn='${temp_inn}', role='${role}', status='${status}' WHERE id_teacher=${id_teacher}`
+			)
+
+			console.log(status)
+			res.status(200).json({
+				message: 'Изменения успешно сохранены',
+				type: 'success',
+				data: rows,
+			})
 		} catch (e) {
 			console.log(e)
 			res.status(500).json({

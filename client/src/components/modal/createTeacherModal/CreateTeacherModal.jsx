@@ -54,8 +54,8 @@ const CreateTeacherModal = ({
 							onChange={change}
 						/>
 						<input
-							value={form.inn}
-							name='inn'
+							value={form.temp_inn}
+							name='temp_inn'
 							type='text'
 							className={styles.infoInput}
 							placeholder='ИНН'
